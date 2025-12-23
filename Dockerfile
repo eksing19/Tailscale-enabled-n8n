@@ -2,14 +2,14 @@ FROM n8nio/n8n:latest
 
 USER root
 
-# Install Tailscale using Debian/Ubuntu commands
-RUN apt-get update && apt-get install -y \
-    ca-certificates \
-    curl \
-    tailscale \
-    && rm -rf /var/lib/apt/lists/*
+# 1. Manually reinstall apk-tools (Workaround for n8n 2.1.0+ optimization)
+RUN wget -q https://dl-cdn.alpinelinux.org/alpine/v3.22/main/x86_64/apk-tools-2.14.8-r0.apk && \
+    tar -xzf apk-tools-2.14.8-r0.apk -C / && \
+    rm apk-tools-2.14.8-r0.apk
 
-# Copy the boot script
+# 2. Now 'apk' is back, we can install Tailscale
+RUN apk add --no-cache ca-certificates tailscale
+
 COPY run.sh /run.sh
 RUN chmod +x /run.sh
 
