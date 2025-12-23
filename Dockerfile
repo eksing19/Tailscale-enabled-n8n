@@ -1,8 +1,13 @@
 FROM n8nio/n8n:latest
 
 USER root
-# Install Tailscale
-RUN apk add --no-cache ca-certificates tailscale
+
+# Install Tailscale using Debian/Ubuntu commands
+RUN apt-get update && apt-get install -y \
+    ca-certificates \
+    curl \
+    tailscale \
+    && rm -rf /var/lib/apt/lists/*
 
 # Copy the boot script
 COPY run.sh /run.sh

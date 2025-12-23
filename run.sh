@@ -1,13 +1,12 @@
 #!/bin/sh
 
-# Start Tailscale in background
+# Start Tailscale in background (using userspace for Render)
 tailscaled --tun=userspace-networking --socks5-server=localhost:1055 &
 
-# Wait for it to boot
-sleep 3
+# Wait for boot
+sleep 5
 
-# Login using the variable from Render's Dashboard
-# The key is NEVER saved in this file or GitHub
+# Login using your secret key from Render Dashboard
 tailscale up --authkey=${TAILSCALE_AUTHKEY} --hostname=render-n8n --accept-routes
 
 # Start n8n
